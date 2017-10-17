@@ -20,7 +20,7 @@ def clean_and_int(data):
             data[i] = int(data[i])
     return data
 
-page = requests.get('https://thinkgaming.com/app-sales-data/top-free-games/?page=1/.html')
+page = requests.get('https://thinkgaming.com/app-sales-data/?page=1/.html')
 tree = html.fromstring(page.content)
 
 # xpath to the game names
@@ -37,11 +37,17 @@ revenue = clean_and_int(revenue)
 installs = tree.xpath('//td[@class="table-data table-data-installs_new"]/text()')
 installs = clean_and_int(installs)
 
-# xoath for the rank of the game  
-rank = tree.xpath('//td[@class="info table-data table-data-revenue_rank"]/text() | \
-                  //td[@class="info table-data table-data-revenue_rank table-data-revenue_rank_empty"]/text()')
-rank = clean_and_int(rank)
+# xoath for the free_rank(amount of installs) of the game  
+free_rank = tree.xpath('//td[@class="info table-data table-data-free_rank"]/text() | \
+                       //td[@class="info table-data table-data-free_rank table-data-free_rank_empty"]/text()')
+free_rank = clean_and_int(free_rank)
 
-print(rank)
+# xpath for the gross_rank of the game
+gross_rank = tree.xpath('//td[@class="info top-grossing-rank"]/text()')
+gross_rank = clean_and_int(gross_rank)
+
+package = list(zip(games, publishers, revenue, installs, gross_rank, free_rank))
+
+print(package)
 # %%
 
