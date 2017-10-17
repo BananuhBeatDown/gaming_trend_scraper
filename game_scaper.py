@@ -20,10 +20,17 @@ publishers = tree.xpath('//td[@class="info table-data table-data-publisher"]/a/t
 
 # xpath to the game's revenue
 revenue = tree.xpath('//td[@class="table-data table-data-revenue"]/text()')
-# clean the revenue data
+# clean the revenue data of non-digit characters and change to int type
 for i in range(len(revenue)):
     revenue[i] = revenue[i].translate({ord(c): None for c in '$,'})
     revenue[i] = int(revenue[i])
+
+# xpath for the amount of installs per game    
+installs = tree.xpath('//td[@class="table-data table-data-installs_new"]/text()')
+# clean the installs data of non-digit characters and change to int type
+for i in range(len(installs)):
+    installs[i] = installs[i].replace(',', '')
+    installs[i] = int(installs[i])
 
 # %%
 
