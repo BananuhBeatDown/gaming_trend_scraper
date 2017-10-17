@@ -9,6 +9,17 @@ Created on Mon Oct 16 14:36:36 2017
 from lxml import html
 import requests
 
+# helper function that cleans common characters from numbers
+# and changes them to int class
+def clean_and_int(data):
+    for i in range(len(data)):
+        if data[i] == '-':
+            data[i] = 0
+        else:
+            data[i] = data[i].translate({ord(c): None for c in '$,'})
+            data[i] = int(data[i])
+    return data
+
 page = requests.get('https://thinkgaming.com/app-sales-data/top-free-games/?page=1/.html')
 tree = html.fromstring(page.content)
 
@@ -20,17 +31,17 @@ publishers = tree.xpath('//td[@class="info table-data table-data-publisher"]/a/t
 
 # xpath to the game's revenue
 revenue = tree.xpath('//td[@class="table-data table-data-revenue"]/text()')
-# clean the revenue data of non-digit characters and change to int type
-for i in range(len(revenue)):
-    revenue[i] = revenue[i].translate({ord(c): None for c in '$,'})
-    revenue[i] = int(revenue[i])
+revenue = clean_and_int(revenue)
 
 # xpath for the amount of installs per game    
 installs = tree.xpath('//td[@class="table-data table-data-installs_new"]/text()')
-# clean the installs data of non-digit characters and change to int type
-for i in range(len(installs)):
-    installs[i] = installs[i].replace(',', '')
-    installs[i] = int(installs[i])
+installs = clean_and_int(installs)
 
+# xoath for the rank of the game  
+rank = tree.xpath('//td[@class="info table-data table-data-revenue_rank"]/text() | \
+                  //td[@class="info table-data table-data-revenue_rank table-data-revenue_rank_empty"]/text()')
+rank = clean_and_int(rank)
+
+print(rank)
 # %%
 
