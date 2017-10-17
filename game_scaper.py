@@ -18,7 +18,12 @@ games = tree.xpath('//a[@class="App-Teaser__link"]/text()')
 # xpath to the game publishers
 publishers = tree.xpath('//td[@class="info table-data table-data-publisher"]/a/text()')
 
-
+# xpath to the game's revenue
+revenue = tree.xpath('//td[@class="table-data table-data-revenue"]/text()')
+# clean the revenue data
+for i in range(len(revenue)):
+    revenue[i] = revenue[i].translate({ord(c): None for c in '$,'})
+    revenue[i] = int(revenue[i])
 
 # %%
 
