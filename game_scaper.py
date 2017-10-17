@@ -11,5 +11,14 @@ import requests
 
 page = requests.get('https://thinkgaming.com/app-sales-data/top-free-games/?page=1/.html')
 tree = html.fromstring(page.content)
+
+# xpath to the game names
 games = tree.xpath('//a[@class="App-Teaser__link"]/text()')
-print(games)
+
+# xpath to the game publishers
+publishers = tree.xpath('//td[@class="info table-data table-data-publisher"]/a/text()')
+
+
+
+# %%
+
