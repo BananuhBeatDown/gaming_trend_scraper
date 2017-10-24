@@ -86,3 +86,38 @@ frame.to_pickle(pickle_file)
 
 # %%
 
+import re
+import requests
+from lxml import html
+from xml.etree import ElementTree
+import pandas as pd
+import os
+import datetime
+import json
+from bs4 import BeautifulSoup
+
+games = []
+
+page = requests.get('https://rss.itunes.apple.com/api/v1/us/ios-apps/top-grossing/all/200/explicit.rss')
+soup = BeautifulSoup(page.text, 'lxml')
+for line in soup.find_all('description')[1:]:
+    games.append(line.string)
+#for i in range(len(games)):
+#    games[i] = re.sub(r' -.*', '', games[i])
+# root = tree.getroot()
+# soup = BeautifulSoup(tree)
+# newDictionary = json.loads(str(soup))
+
+# games.extend(tree.xpath('//name/text()'))
+
+print(len(games))
+
+# %%
+
+i = 0
+
+for game in frame['game']:
+    if game in str(soup.find_all('title')[1:]):
+        i += 1
+        
+print(i)
